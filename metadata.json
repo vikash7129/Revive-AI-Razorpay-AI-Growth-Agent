@@ -2,5 +2,7 @@
   "name": "ReviveAI - Razorpay AI Growth Agent",
   "description": "An autonomous AI growth agent that analyzes merchant payment activity, identifies revenue opportunities, enforces strict policy/risk approval gates, and executes bounded actions via Razorpay test APIs.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
