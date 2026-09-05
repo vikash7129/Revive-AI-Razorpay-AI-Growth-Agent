@@ -5,7 +5,8 @@ import {
   Bot, 
   Zap, 
   AlertTriangle,
-  Menu
+  Menu,
+  Film
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -16,6 +17,7 @@ interface HeaderProps {
   simulateFailureMode: boolean;
   setSimulateFailureMode: (val: boolean) => void;
   onOpenMobileMenu?: () => void;
+  onOpenPitchVideo?: () => void;
   activeTabLabel?: string;
 }
 
@@ -27,6 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
   simulateFailureMode,
   setSimulateFailureMode,
   onOpenMobileMenu,
+  onOpenPitchVideo,
   activeTabLabel = 'Dashboard Overview',
 }) => {
   return (
@@ -73,6 +76,20 @@ export const Header: React.FC<HeaderProps> = ({
             {simulateFailureMode ? 'ON' : 'OFF'}
           </span>
         </button>
+
+        {/* Pitch Video Button */}
+        {onOpenPitchVideo && (
+          <button
+            id="open-pitch-video-btn"
+            onClick={onOpenPitchVideo}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-sm transition-all active:scale-95"
+            title="Watch 5-Minute Pitch Video Demo Flow (0:00 - 5:00)"
+          >
+            <Film className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Pitch Video</span>
+            <span className="text-[10px] bg-white/20 px-1.5 py-0.2 rounded font-mono">5m</span>
+          </button>
+        )}
 
         {/* AI Advisor button */}
         <button

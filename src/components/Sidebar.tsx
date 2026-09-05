@@ -2,17 +2,19 @@ import React from 'react';
 import { 
   Store, 
   Zap, 
-  Cpu, 
   BarChart3, 
   FileText, 
   X,
   ShieldCheck,
-  CreditCard
+  CreditCard,
+  Film
 } from 'lucide-react';
 
+export type SidebarTab = 'hub' | 'pitch' | 'agents' | 'analytics' | 'audit';
+
 interface SidebarProps {
-  currentTab: 'hub' | 'agents' | 'analytics' | 'audit';
-  onSelectTab: (tab: 'hub' | 'agents' | 'analytics' | 'audit') => void;
+  currentTab: SidebarTab;
+  onSelectTab: (tab: SidebarTab) => void;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
 }
@@ -23,8 +25,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpenMobile = false,
   onCloseMobile,
 }) => {
-  const navItems: { id: 'hub' | 'agents' | 'analytics' | 'audit'; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  const navItems: { id: SidebarTab; label: string; icon: React.ComponentType<{ className?: string }>; badge?: string }[] = [
     { id: 'hub', label: 'Merchant Hub', icon: Store },
+    { id: 'pitch', label: 'Pitch Video (5m)', icon: Film, badge: 'Demo Flow' },
     { id: 'agents', label: 'AI Agents', icon: Zap },
     { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'audit', label: 'Audit Trail', icon: FileText },
@@ -81,7 +84,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }`}
             >
               <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-              <span>{item.label}</span>
+              <span className="truncate">{item.label}</span>
+              {item.badge && !isActive && (
+                <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700/50">
+                  {item.badge}
+                </span>
+              )}
               {isActive && (
                 <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
               )}

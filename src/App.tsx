@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Sidebar } from './components/Sidebar';
+import { Sidebar, SidebarTab } from './components/Sidebar';
 import { Header } from './components/Header';
 import { MetricsCards } from './components/MetricsCards';
 import { ArchitectureDiagram } from './components/ArchitectureDiagram';
@@ -15,6 +15,7 @@ import { AuditTrailTable } from './components/AuditTrailTable';
 import { DataExplorer } from './components/DataExplorer';
 import { AiAdvisorDrawer } from './components/AiAdvisorDrawer';
 import { PipelineProgressModal } from './components/PipelineProgressModal';
+import { PitchVideoStudio } from './components/PitchVideoStudio';
 import { 
   MerchantOverview, 
   Customer, 
@@ -30,7 +31,7 @@ import {
   INITIAL_OPPORTUNITIES, 
   INITIAL_AUDIT_LOGS 
 } from './data/syntheticData';
-import { AlertTriangle, Sparkles, CheckCircle2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { AlertTriangle, Sparkles, CheckCircle2, ShieldCheck, ArrowRight, Film } from 'lucide-react';
 
 export default function App() {
   const [overview, setOverview] = useState<MerchantOverview>(INITIAL_MERCHANT_OVERVIEW);
@@ -51,7 +52,7 @@ export default function App() {
   const [activeExplorerTab, setActiveExplorerTab] = useState<'customers' | 'transactions' | 'failures'>('customers');
   
   // Navigation & responsive drawer states
-  const [activeNavTab, setActiveNavTab] = useState<'hub' | 'agents' | 'analytics' | 'audit'>('hub');
+  const [activeNavTab, setActiveNavTab] = useState<SidebarTab>('pitch');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Load state from backend
@@ -161,6 +162,8 @@ export default function App() {
 
   const getHeaderTitle = () => {
     switch (activeNavTab) {
+      case 'pitch':
+        return 'Pitch Video & Presentation Flow (5:00)';
       case 'agents':
         return 'AI Agents & Multi-Agent Orchestrator';
       case 'analytics':
@@ -193,6 +196,7 @@ export default function App() {
           simulateFailureMode={simulateFailureMode}
           setSimulateFailureMode={setSimulateFailureMode}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+          onOpenPitchVideo={() => setActiveNavTab('pitch')}
           activeTabLabel={getHeaderTitle()}
         />
 
@@ -217,9 +221,46 @@ export default function App() {
             </div>
           )}
 
+          {/* 🎬 Pitch Video Presentation Tab */}
+          {activeNavTab === 'pitch' && (
+            <PitchVideoStudio
+              onNavigateToHub={() => setActiveNavTab('hub')}
+              onOpenApprovalModal={() => {
+                if (opportunities[0]) {
+                  handleOpenApprovalModal(opportunities[0].proposedCampaign);
+                }
+              }}
+              onRunPipeline={handleRunPipeline}
+            />
+          )}
+
           {/* Tab Views: Hub (Default), Agents, Analytics, or Audit */}
           {activeNavTab === 'hub' && (
             <>
+              {/* Quick Launch Banner to Pitch Video */}
+              <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-xl p-4 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-blue-800/60">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-blue-500/20 rounded-lg border border-blue-400/30 text-blue-300">
+                    <Film className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+                      <span>5-Minute Pitch Video &amp; Male Presenter Demo Ready</span>
+                      <span className="px-2 py-0.5 rounded-full bg-blue-500 text-[10px] font-mono">0:00 - 5:00</span>
+                    </h3>
+                    <p className="text-xs text-blue-200 mt-0.5">
+                      Full pitch walkthrough with synchronized voice narration, live screen demos, guardrail checks, and failure recovery.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setActiveNavTab('pitch')}
+                  className="px-3.5 py-1.5 bg-white text-blue-900 hover:bg-blue-50 rounded-lg text-xs font-bold shrink-0 transition-colors shadow-sm self-start sm:self-auto flex items-center gap-1.5"
+                >
+                  <span>Launch Pitch Studio</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
               {/* 1️⃣ Merchant Dashboard Top Metrics */}
               <section aria-label="Merchant Overview Metrics">
                 <MetricsCards
