@@ -1,0 +1,400 @@
+import { Customer, Transaction, MerchantOverview, GrowthOpportunity, AuditLog } from '../types';
+
+export const INITIAL_MERCHANT_OVERVIEW: MerchantOverview = {
+  storeName: 'UrbanGrip Athletics & Apparel',
+  mode: 'test',
+  currency: 'INR (₹)',
+  totalRevenue: 482500,
+  customerCount: 1248,
+  transactionCount: 2341,
+  failedPaymentCount: 87,
+  atRiskCustomerCount: 126,
+  averageOrderValue: 2061,
+  paymentSuccessRate: 96.4,
+  lastUpdated: new Date().toISOString(),
+};
+
+export const SAMPLE_CUSTOMERS: Customer[] = [
+  {
+    id: 'cust_test_001',
+    name: 'Customer A (Aarav Sharma)',
+    email: 'aarav.sharma@example.com',
+    phone: '+91 98201 12345',
+    lastPurchaseDaysAgo: 5,
+    totalOrders: 6,
+    averageOrderValue: 1200,
+    totalSpent: 7200,
+    segment: 'active',
+    favoriteCategory: 'Running Gear',
+    lastProductBought: 'UrbanGrip Pro Trail Runner Shoes',
+    hasRecentFailedPayment: false,
+  },
+  {
+    id: 'cust_test_002',
+    name: 'Customer B (Rohan Varma)',
+    email: 'rohan.varma@example.com',
+    phone: '+91 99345 67890',
+    lastPurchaseDaysAgo: 93,
+    totalOrders: 3,
+    averageOrderValue: 2400,
+    totalSpent: 7200,
+    segment: 'at_risk',
+    favoriteCategory: 'Training Apparel',
+    lastProductBought: 'Merino Wool Athletic Hoodie',
+    hasRecentFailedPayment: false,
+  },
+  {
+    id: 'cust_test_003',
+    name: 'Priya Mukherjee',
+    email: 'priya.m@example.com',
+    phone: '+91 98111 22334',
+    lastPurchaseDaysAgo: 71,
+    totalOrders: 4,
+    averageOrderValue: 3100,
+    totalSpent: 12400,
+    segment: 'at_risk',
+    favoriteCategory: 'Footwear',
+    lastProductBought: 'Pro Carbon Running Shoes',
+    hasRecentFailedPayment: false,
+  },
+  {
+    id: 'cust_test_004',
+    name: 'Vikram Malhotra',
+    email: 'vikram.m@example.com',
+    phone: '+91 97222 33445',
+    lastPurchaseDaysAgo: 2,
+    totalOrders: 2,
+    averageOrderValue: 1850,
+    totalSpent: 3700,
+    segment: 'active',
+    favoriteCategory: 'Accessories',
+    lastProductBought: 'Ergo Grip Gym Duffel',
+    hasRecentFailedPayment: true,
+  },
+  {
+    id: 'cust_test_005',
+    name: 'Ananya Deshmukh',
+    email: 'ananya.d@example.com',
+    phone: '+91 96555 44332',
+    lastPurchaseDaysAgo: 110,
+    totalOrders: 5,
+    averageOrderValue: 2150,
+    totalSpent: 10750,
+    segment: 'churned',
+    favoriteCategory: 'Yoga & Pilates',
+    lastProductBought: 'Eco Grip Alignment Yoga Mat',
+    hasRecentFailedPayment: false,
+  },
+  {
+    id: 'cust_test_006',
+    name: 'Karan Patel',
+    email: 'karan.patel@example.com',
+    phone: '+91 98980 98980',
+    lastPurchaseDaysAgo: 64,
+    totalOrders: 2,
+    averageOrderValue: 2800,
+    totalSpent: 5600,
+    segment: 'at_risk',
+    favoriteCategory: 'Running Gear',
+    lastProductBought: 'Pro Carbon Running Shoes',
+    hasRecentFailedPayment: false,
+  },
+  {
+    id: 'cust_test_007',
+    name: 'Sneha Rao',
+    email: 'sneha.rao@example.com',
+    phone: '+91 94441 55223',
+    lastPurchaseDaysAgo: 1,
+    totalOrders: 1,
+    averageOrderValue: 3499,
+    totalSpent: 3499,
+    segment: 'first_time',
+    favoriteCategory: 'Footwear',
+    lastProductBought: 'Pro Carbon Running Shoes',
+    hasRecentFailedPayment: true,
+  },
+  {
+    id: 'cust_test_008',
+    name: 'Tanvi Singhal',
+    email: 'tanvi.s@example.com',
+    phone: '+91 98100 44321',
+    lastPurchaseDaysAgo: 85,
+    totalOrders: 3,
+    averageOrderValue: 1950,
+    totalSpent: 5850,
+    segment: 'at_risk',
+    favoriteCategory: 'Activewear',
+    lastProductBought: 'BreezeFit Seamless Leggings',
+    hasRecentFailedPayment: false,
+  }
+];
+
+export const SAMPLE_TRANSACTIONS: Transaction[] = [
+  {
+    id: 'txn_test_1092',
+    razorpayOrderId: 'order_test_92kL1a89mN',
+    razorpayPaymentId: 'pay_test_88aA192Bcd',
+    customerId: 'cust_test_001',
+    customerName: 'Aarav Sharma (Customer A)',
+    amount: 1200,
+    currency: 'INR',
+    status: 'captured',
+    method: 'upi',
+    createdAt: '2026-09-01T14:32:10Z',
+    items: [
+      { productId: 'prod_run_01', productName: 'UrbanGrip Performance Run Tee', quantity: 1, price: 1200 }
+    ]
+  },
+  {
+    id: 'txn_test_1091',
+    razorpayOrderId: 'order_test_77xP41mK90',
+    razorpayPaymentId: 'pay_test_33pQ991Xyz',
+    customerId: 'cust_test_007',
+    customerName: 'Sneha Rao',
+    amount: 3499,
+    currency: 'INR',
+    status: 'failed',
+    failureReason: 'Customer bank gateway timeout during 3D Secure OTP verification',
+    method: 'card',
+    createdAt: '2026-09-04T18:15:22Z',
+    items: [
+      { productId: 'prod_shoe_01', productName: 'Pro Carbon Running Shoes (Product A)', quantity: 1, price: 3499 }
+    ]
+  },
+  {
+    id: 'txn_test_1090',
+    razorpayOrderId: 'order_test_66aB8811Kk',
+    razorpayPaymentId: 'pay_test_11zZ8822Aa',
+    customerId: 'cust_test_004',
+    customerName: 'Vikram Malhotra',
+    amount: 1850,
+    currency: 'INR',
+    status: 'captured',
+    method: 'upi',
+    createdAt: '2026-09-03T11:20:05Z',
+    items: [
+      { productId: 'prod_acc_03', productName: 'Ergo Grip Gym Duffel', quantity: 1, price: 1850 }
+    ]
+  },
+  {
+    id: 'txn_test_1089',
+    razorpayOrderId: 'order_test_55vV4499Pp',
+    razorpayPaymentId: 'pay_test_00mM7733Bb',
+    customerId: 'cust_test_002',
+    customerName: 'Rohan Varma (Customer B)',
+    amount: 2400,
+    currency: 'INR',
+    status: 'captured',
+    method: 'netbanking',
+    createdAt: '2026-06-04T09:45:00Z',
+    items: [
+      { productId: 'prod_app_02', productName: 'Merino Wool Athletic Hoodie', quantity: 1, price: 2400 }
+    ]
+  },
+  {
+    id: 'txn_test_1088',
+    razorpayOrderId: 'order_test_44qQ3388Tt',
+    customerId: 'cust_test_009',
+    customerName: 'Harshita Sen',
+    amount: 2999,
+    currency: 'INR',
+    status: 'failed',
+    failureReason: 'Payment declined by issuer bank (insufficient daily UPI velocity)',
+    method: 'upi',
+    createdAt: '2026-09-04T21:40:15Z',
+    items: [
+      { productId: 'prod_shoe_01', productName: 'Pro Carbon Running Shoes', quantity: 1, price: 2999 }
+    ]
+  }
+];
+
+export const INITIAL_OPPORTUNITIES: GrowthOpportunity[] = [
+  {
+    id: 'opp_win_back_01',
+    title: '126 High-Value Customers Inactive For 60+ Days',
+    type: 'WIN_BACK',
+    urgency: 'high',
+    summary: '126 customers with positive historical LTV (like Customer B, last bought 93 days ago) haven\'t purchased recently. Propose bounded win-back campaign.',
+    rationale: 'Historical purchase frequency indicates a healthy 42-day cycle. Lapsed users beyond 60 days have 74% higher reactivation probability if targeted with a time-limited 10% coupon.',
+    affectedCount: 126,
+    sampleAudience: ['Rohan Varma (93d)', 'Priya Mukherjee (71d)', 'Karan Patel (64d)', 'Tanvi Singhal (85d)'],
+    potentialRevenue: 68500,
+    proposedCampaign: {
+      id: 'camp_win_back_101',
+      name: 'Autumn Win-Back Reactivation Campaign',
+      type: 'WIN_BACK',
+      targetAudienceDescription: '100 inactive customers with >60 days since last purchase and AOV > ₹1,800',
+      targetAudienceCount: 100,
+      budget: 5000,
+      discountPercent: 10,
+      discountCapPerUser: 250,
+      durationDays: 7,
+      callToAction: 'Reactivate With 10% Off via Razorpay Link',
+      expectedRecoveryCount: 28,
+      expectedRevenueLift: 58000,
+      razorpayActionType: 'CREATE_PAYMENT_LINKS',
+      status: 'WAITING_FOR_APPROVAL',
+      createdAt: '2026-09-04T18:20:00Z',
+      policyCheck: {
+        overallStatus: 'PASSED',
+        riskLevel: 'LOW',
+        maxBudgetAllowed: 10000,
+        proposedBudget: 5000,
+        maxDiscountAllowedPercent: 15,
+        proposedDiscountPercent: 10,
+        maxAudienceCap: 200,
+        proposedAudienceCount: 100,
+        rules: [
+          { ruleId: 'POL_BUDGET_CAP', ruleName: 'Max Merchant Budget Check', limit: '₹10,000', proposedValue: '₹5,000', passed: true, notes: 'Within bounded financial safety limit' },
+          { ruleId: 'POL_DISCOUNT_CAP', ruleName: 'Maximum Discount Cap', limit: '15%', proposedValue: '10%', passed: true, notes: 'Safe margin protection threshold' },
+          { ruleId: 'POL_AUDIENCE_LIMIT', ruleName: 'Target Audience Cap', limit: '200 users', proposedValue: '100 users', passed: true, notes: 'Controlled cohort test batch' },
+          { ruleId: 'POL_PER_USER_CAP', ruleName: 'Discount Cap Per User', limit: '₹350', proposedValue: '₹250 max', passed: true, notes: 'Prevents coupon stacking misuse' },
+          { ruleId: 'POL_VALIDITY_WINDOW', ruleName: 'Campaign Expiry Window', limit: '14 days', proposedValue: '7 days', passed: true, notes: 'Urgency driver within policy constraints' }
+        ],
+        explanation: 'All 5 risk and policy constraints satisfied. Proposed budget of ₹5,000 represents 50% of the merchant max allowed limit (₹10,000). Action is strictly bounded.'
+      }
+    }
+  },
+  {
+    id: 'opp_cross_sell_02',
+    title: 'Cross-Sell: 43 Running Shoe Buyers Rarely Buy Complementary Accessories',
+    type: 'CROSS_SELL',
+    urgency: 'medium',
+    summary: 'Customers buying "Product A (Pro Carbon Running Shoes)" have only 3.2% co-purchase rate for sports accessories (Performance Grip Socks / Hydration Pack).',
+    rationale: 'Personalization Agent analyzed basket affinities. Bundling complementary accessories with a pre-created Razorpay test offer order captures unmonetized intent.',
+    affectedCount: 43,
+    sampleAudience: ['Sneha Rao', 'Karan Patel', 'Priya Mukherjee', 'Aarav Sharma'],
+    potentialRevenue: 42000,
+    proposedCampaign: {
+      id: 'camp_cross_sell_202',
+      name: 'Runner\'s Synergy Cross-Sell Bundle',
+      type: 'CROSS_SELL',
+      targetAudienceDescription: '43 verified purchasers of Product A who have not bought complementary gear in 30 days',
+      targetAudienceCount: 43,
+      budget: 3500,
+      discountPercent: 12,
+      discountCapPerUser: 200,
+      durationDays: 5,
+      callToAction: 'Add Performance Pack at Exclusive Bundle Price',
+      expectedRecoveryCount: 16,
+      expectedRevenueLift: 28800,
+      razorpayActionType: 'CREATE_OFFER_ORDERS',
+      status: 'PROPOSED',
+      createdAt: '2026-09-04T18:21:00Z',
+      policyCheck: {
+        overallStatus: 'PASSED',
+        riskLevel: 'LOW',
+        maxBudgetAllowed: 10000,
+        proposedBudget: 3500,
+        maxDiscountAllowedPercent: 15,
+        proposedDiscountPercent: 12,
+        maxAudienceCap: 200,
+        proposedAudienceCount: 43,
+        rules: [
+          { ruleId: 'POL_BUDGET_CAP', ruleName: 'Max Merchant Budget Check', limit: '₹10,000', proposedValue: '₹3,500', passed: true, notes: 'Safe tier' },
+          { ruleId: 'POL_DISCOUNT_CAP', ruleName: 'Maximum Discount Cap', limit: '15%', proposedValue: '12%', passed: true, notes: 'Below margin threshold' },
+          { ruleId: 'POL_AUDIENCE_LIMIT', ruleName: 'Target Audience Cap', limit: '200 users', proposedValue: '43 users', passed: true, notes: 'Highly targeted cohort' }
+        ],
+        explanation: 'Low-risk cross-sell initiative bounded to ₹3,500 total spend.'
+      }
+    }
+  },
+  {
+    id: 'opp_failure_recovery_03',
+    title: 'Recover 87 Failed Checkouts via 1-Click Instant Retry Link',
+    type: 'PAYMENT_RECOVERY',
+    urgency: 'high',
+    summary: '87 transactions failed due to 3D Secure bank timeouts and card OTP drops. ₹1,42,000 in gross merchandise value stalled.',
+    rationale: 'Sending targeted WhatsApp/SMS Razorpay Payment Recovery Links within 2 hours of checkout drop recovers on average 31% of dropped GMV without offering margin-eroding discounts.',
+    affectedCount: 87,
+    sampleAudience: ['Sneha Rao (₹3,499)', 'Harshita Sen (₹2,999)', 'Vikram Malhotra (₹1,850)'],
+    potentialRevenue: 44020,
+    proposedCampaign: {
+      id: 'camp_recovery_303',
+      name: 'Zero-Friction Checkout Recovery Automation',
+      type: 'PAYMENT_RECOVERY',
+      targetAudienceDescription: '87 customers with failed checkout attempts in the last 72 hours',
+      targetAudienceCount: 87,
+      budget: 1500,
+      discountPercent: 5,
+      discountCapPerUser: 100,
+      durationDays: 3,
+      callToAction: 'Send Razorpay Instant Retry Link',
+      expectedRecoveryCount: 27,
+      expectedRevenueLift: 44020,
+      razorpayActionType: 'GENERATE_RETRY_TOKENS',
+      status: 'PROPOSED',
+      createdAt: '2026-09-04T18:22:00Z',
+      policyCheck: {
+        overallStatus: 'PASSED',
+        riskLevel: 'LOW',
+        maxBudgetAllowed: 10000,
+        proposedBudget: 1500,
+        maxDiscountAllowedPercent: 15,
+        proposedDiscountPercent: 5,
+        maxAudienceCap: 200,
+        proposedAudienceCount: 87,
+        rules: [
+          { ruleId: 'POL_BUDGET_CAP', ruleName: 'Max Merchant Budget Check', limit: '₹10,000', proposedValue: '₹1,500', passed: true, notes: 'Minimal notification cost' },
+          { ruleId: 'POL_DISCOUNT_CAP', ruleName: 'Maximum Discount Cap', limit: '15%', proposedValue: '5%', passed: true, notes: 'Token courtesy discount' },
+          { ruleId: 'POL_AUDIENCE_LIMIT', ruleName: 'Target Audience Cap', limit: '200 users', proposedValue: '87 users', passed: true, notes: 'Exact dropped cohort' }
+        ],
+        explanation: 'Very high ROI opportunity. Low budget impact with substantial GMV recovery.'
+      }
+    }
+  }
+];
+
+export const INITIAL_AUDIT_LOGS: AuditLog[] = [
+  {
+    id: 'audit_log_001',
+    timestamp: '2026-09-04 18:21:40',
+    agent: 'Campaign Agent',
+    action: 'Win-back Campaign Proposal Created',
+    reason: '126 customers inactive >60 days with high historical LTV detected by Analyst Agent',
+    budget: 5000,
+    policyStatus: 'Passed ✅',
+    merchantApproval: 'Pending ⏳',
+    executionStatus: 'Pending Review ⏱️',
+    details: 'Campaign "Autumn Win-Back Reactivation" drafted for 100 recipients with 10% capped discount. Submitted to Decision Engine.',
+    policyCheckSummary: 'Budget ₹5,000 <= ₹10,000 | Discount 10% <= 15% | Audience 100 <= 200'
+  },
+  {
+    id: 'audit_log_002',
+    timestamp: '2026-09-04 18:21:12',
+    agent: 'Decision Engine (Policy & Risk)',
+    action: 'Policy & Guardrail Validation Completed',
+    reason: 'Evaluating safety boundaries for Campaign #camp_win_back_101',
+    budget: 5000,
+    policyStatus: 'Passed ✅',
+    merchantApproval: 'Not Required ℹ️',
+    executionStatus: 'Successful ✅',
+    details: 'Evaluated 5 deterministic merchant guardrails. Risk score calculated: 14/100 (LOW). Gated for Merchant Human-in-the-Loop Signoff.',
+    policyCheckSummary: 'All 5 risk guardrails PASSED without exceptions.'
+  },
+  {
+    id: 'audit_log_003',
+    timestamp: '2026-09-04 18:20:05',
+    agent: 'Data Analyst Agent',
+    action: 'Synthetic Transaction & Customer Base Scanned',
+    reason: 'Merchant triggered growth opportunity detection',
+    budget: 0,
+    policyStatus: 'Passed ✅',
+    merchantApproval: 'Not Required ℹ️',
+    executionStatus: 'Successful ✅',
+    details: 'Parsed 2,341 transactions, 1,248 customer records. Identified 126 at-risk customers, 43 basket cross-sell gaps, and 87 failed checkout sessions.',
+  },
+  {
+    id: 'audit_log_004',
+    timestamp: '2026-09-02 11:15:30',
+    agent: 'Razorpay Test API',
+    action: 'Simulated Order Batch Created',
+    reason: 'Scheduled test payment reconciliation',
+    budget: 0,
+    policyStatus: 'Passed ✅',
+    merchantApproval: 'Approved ✅',
+    executionStatus: 'Successful ✅',
+    razorpayRefId: 'order_test_8923fks912',
+    details: 'Generated test sandbox orders across UPI and Card rails for test verification.'
+  }
+];
